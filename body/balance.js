@@ -1,5 +1,5 @@
 
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
 import { Feather } from '@expo/vector-icons';
 
 
@@ -9,7 +9,7 @@ function Balance() {
         <View style = {styles.balanceContainer}>
             <View style = {styles.halfWrapper}>
                 <View style = {styles.balanceWrapper}>
-                    <Text style = {styles.balanceText}>Balance</Text>
+                    <Text style = {styles.balanceText}>Income</Text>
                 </View>
                 <View style = {styles.balanceNumWrapper}>
                     <Text style = {styles.balanceNum}>£9999.99</Text>
@@ -18,7 +18,7 @@ function Balance() {
 
             <View style = {styles.halfWrapper}>
                 <View style = {styles.balanceWrapper}>
-                    <Text style = {styles.balanceText}>Total Spend</Text>
+                    <Text style = {styles.balanceText}>Expenses</Text>
                 </View>
                 <View style = {styles.balanceNumWrapper}>
                     <Text style = {styles.balanceNum}>£9999.99</Text>
