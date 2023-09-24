@@ -1,0 +1,6 @@
+BudgetBear Notes
+
+Hex codes for colour pallete: 
+
+Hex Codes: #4169e1 (Blue), #ff6b35 (Orange), #eef4ed (Light)
+
