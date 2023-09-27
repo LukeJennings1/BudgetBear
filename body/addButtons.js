@@ -2,19 +2,36 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+// const dataToStore = ["Dave","Lucy","Jack"]
+let nameData = null;
+
 const AddButtons = () => {
     const storeData = async (value) => {
       try {
         const jsonValue = JSON.stringify(value);
         await AsyncStorage.setItem('my-key', jsonValue);
-    
+        console.log(await AsyncStorage.getItem("my-key"));
       } catch (e) {
-        // Handle the saving error
         console.error('Error saving data:', e);
       }
     };
-    
-    storeData('hello');
+
+    const getData = async (data) => {
+        try {
+            
+            let nameData = await AsyncStorage.getItem(data);
+            console.log(nameData);
+
+            // console.log(await AsyncStorage.getItem("my-key"))
+        }
+        catch (e) {
+            console.error("Error getting data", e);
+        }
+    }
+    getData("my-key"); // gets the data
+    // nameData.push("test"); // adds more data
+    // storeData(nameData); // stores the data
     
   return (
     <View style={styles.buttonWrapper}>
