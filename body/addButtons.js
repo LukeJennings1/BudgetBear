@@ -1,70 +1,83 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-// const dataToStore = ["Dave","Lucy","Jack"]
-let nameData = null;
-
 const AddButtons = () => {
-    const storeData = async (value) => {
-      try {
-        const jsonValue = JSON.stringify(value);
-        await AsyncStorage.setItem('my-key', jsonValue);
-        console.log(await AsyncStorage.getItem("my-key"));
-      } catch (e) {
-        console.error('Error saving data:', e);
-      }
-    };
+  const [userData, setUserData] = useState([]);
 
-    const getData = async (data) => {
-        try {
-            
-            let nameData = await AsyncStorage.getItem(data);
-            console.log(nameData);
+  useEffect(() => {
+    getData(); // Fetch data when the component mounts
+  }, []);
 
-            // console.log(await AsyncStorage.getItem("my-key"))
+  const storeData = (value) => {
+    const jsonValue = JSON.stringify(value);
+    AsyncStorage.setItem('my-key', jsonValue)
+      .then(() => {
+        console.log('Data stored successfully');
+      })
+      .catch((error) => {
+        console.error('Error saving data:', error);
+      });
+  };
+
+  const getData = () => {
+    AsyncStorage.getItem('my-key')
+      .then((nameData) => {
+        if (nameData) {
+          const parsedData = JSON.parse(nameData);
+          setUserData(parsedData);
+          console.log(parsedData)
+
         }
-        catch (e) {
-            console.error("Error getting data", e);
-        }
-    }
-    getData("my-key"); // gets the data
-    // nameData.push("test"); // adds more data
-    // storeData(nameData); // stores the data
-    
+      })
+      .catch((error) => {
+        console.error('Error getting data', error);
+      });
+  };
+
   return (
     <View style={styles.buttonWrapper}>
-      <TouchableOpacity style={styles.addButton} onPress = {() =>     {}}>
-        <Text style={styles.buttonText}>Add Income</Text>
+      <Text>{userData.income}</Text>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => {
+          getData(); // Refresh data
+        }}
+      >
+        <Text style={styles.buttonText}>Refresh Data</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.addButton}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => {
+          const updatedUserData = { ...userData, test: 'test2' };
+          setUserData(updatedUserData);
+          storeData(updatedUserData);
+        }}
+      >
         <Text style={styles.buttonText}>Add Expenses</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   buttonWrapper: {
     flexDirection: 'row',
   },
   addButton: {
     borderRadius: 25,
     height: 50,
-    width: 160, 
+    width: 160,
     backgroundColor: '#4169e1',
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
-
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
-    fontFamily: 'Bebas-Neue-Regular',
     fontSize: 20,
   },
-};
+});
 
 export default AddButtons;
