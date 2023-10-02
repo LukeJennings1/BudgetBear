@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ModalTemplate from './modalTemplate';
 
 const AddButtons = () => {
-  const [userData, setUserData] = useState([]);
+const [userData, setUserData] = useState([]);
+const [isModalVisible, setModalVisible] = useState(false);
+
 
   useEffect(() => {
     getData(); // Fetch data when the component mounts
@@ -20,20 +23,30 @@ const AddButtons = () => {
       });
   };
 
-  const getData = () => {
-    AsyncStorage.getItem('my-key')
-      .then((nameData) => {
-        if (nameData) {
-          const parsedData = JSON.parse(nameData);
-          setUserData(parsedData);
-          console.log(parsedData)
+  const getData = async () => {
+    try {
+      const nameData = await AsyncStorage.getItem('my-key');
+      if (nameData) {
+        const parsedData = JSON.parse(nameData);
+        setUserData(parsedData);
+      }
 
-        }
-      })
-      .catch((error) => {
-        console.error('Error getting data', error);
-      });
+      const allKeys = await AsyncStorage.getAllKeys();
+      console.log('All Keys:', allKeys);
+    } catch (error) {
+      console.error('Error getting data', error);
+    }
   };
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+  const test = () => {
+      console.log('hello there');
+  }
 
   return (
     <View style={styles.buttonWrapper}>
@@ -49,12 +62,19 @@ const AddButtons = () => {
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => {
-          const updatedUserData = { ...userData, test: 'test2' };
-          setUserData(updatedUserData);
-          storeData(updatedUserData);
+            if (isModalVisible) {
+                closeModal();
+            } else {
+                openModal();
+            }
+        //   const updatedUserData = { ...userData, test: 'test2' };
+        //   setUserData(updatedUserData);
+        //   storeData(updatedUserData);
         }}
       >
         <Text style={styles.buttonText}>Add Expenses</Text>
+        <ModalTemplate visible={isModalVisible} onClose = {closeModal} callit = {test} />
+
       </TouchableOpacity>
     </View>
   );
