@@ -10,7 +10,7 @@ function ModalTemplate({visible, onClose, callit}){
     return (
         <Modal visible = {visible} onRequestClose={onClose} animationType = 'slide'>
             <View style = {styles.modalContainer}>
-            <TouchableOpacity style = {styles.modalCloseButton} onPress={onClose}></TouchableOpacity>
+            <TouchableOpacity style = {styles.modalCloseButton} onPress={onClose()}></TouchableOpacity>
         {/* When we pass the reference ot the function IE onClose instead of onClose() we are essentialy saying 
         for the touchable component to call it when pressed. If we pass onClose() its going to call as soon
         as the code loads. Basically, the touchable component will call it properly (with the perethesis) 
