@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, createContext, useContext, Children } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // This is the schema for the budget
-
+export const Context = createContext(null); // Initialize with null
 
 const default_data = {
     "username": "JohnDoe", // Replace with the actual username
@@ -52,9 +52,9 @@ const default_data = {
     ]
 };
 
-function DataHandler() {
+function DataHandler({children}) {
 
-    let data = useContext();
+const [expenses, setExpenses] = useState(default_data)
 
 const storeData = (data) => {
     const jsonValue = JSON.stringify(data);
@@ -72,23 +72,27 @@ const storeData = (data) => {
       const expense_data = await AsyncStorage.getItem('expenseData');
       if (expense_data) { // if expenseData exists then load it. 
         const parsedData = JSON.parse(expense_data);
-        data = parsedData;
-        
+        setExpenses(parsedData);
+
       } else { // if it does not exist - load generic data
         storeData(default_data);
-        data = default_data;
+        setExpenses(default_data);
 
       }
     } catch (error) {
       console.error('Error getting data', error);
     }
-  };   
+  };
 
   useEffect(() => {
     getData(); // Fetch data when the component mounts
   }, []);
 
-
+  return (
+      <Context.Provider value={[expenses, setExpenses]}>
+          {children}
+      </Context.Provider>
+  )
 }
 
 export default DataHandler;

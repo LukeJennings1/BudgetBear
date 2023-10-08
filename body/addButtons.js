@@ -36,9 +36,7 @@ const [isModalVisible, setModalVisible] = useState(false);
             } else {
                 openModal();
             }
-        //   const updatedUserData = { ...userData, test: 'test2' };
-        //   setUserData(updatedUserData);
-        //   storeData(updatedUserData);
+
         }}
       >
         <Text style={styles.buttonText}>Add Expenses</Text>

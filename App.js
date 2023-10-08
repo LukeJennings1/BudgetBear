@@ -28,17 +28,17 @@ export default function App() {
 
   return (
     <>
-      <SafeAreaView
-        edges={["top", "left", "right"]}
-        style={styles.container}
-        onLayout={onLayoutRootView}
-      >
-        <DataHandler>
-        <Header />
-        <Body />
-        </DataHandler>
-        <StatusBar hidden="false" />
-      </SafeAreaView>
+      <DataHandler>
+        <SafeAreaView
+          edges={["top", "left", "right"]}
+          style={styles.container}
+          onLayout={onLayoutRootView}
+        >
+          <Header />
+          <Body />
+          <StatusBar hidden="false" />
+        </SafeAreaView>
+      </DataHandler>
     </>
   );
 }
