@@ -2,12 +2,12 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import Header from "./header/header";
 import * as Font from "expo-font";
-import { Provider } from "react-redux";
 import store from "./store/store";
 import { useCallback } from "react";
 import Body from "./body/body";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import DataHandler from "./dataSchema";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,17 +27,19 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
+    <>
       <SafeAreaView
         edges={["top", "left", "right"]}
         style={styles.container}
         onLayout={onLayoutRootView}
       >
+        <DataHandler>
         <Header />
         <Body />
+        </DataHandler>
         <StatusBar hidden="false" />
       </SafeAreaView>
-    </Provider>
+    </>
   );
 }
 

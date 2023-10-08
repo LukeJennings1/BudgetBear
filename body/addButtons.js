@@ -1,42 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ModalTemplate from './modalTemplate';
+import ModalTemplate from './expenseModal';
 
 const AddButtons = () => {
 const [userData, setUserData] = useState([]);
 const [isModalVisible, setModalVisible] = useState(false);
-
-
-  useEffect(() => {
-    getData(); // Fetch data when the component mounts
-  }, []);
-
-  const storeData = (value) => {
-    const jsonValue = JSON.stringify(value);
-    AsyncStorage.setItem('my-key', jsonValue)
-      .then(() => {
-        console.log('Data stored successfully');
-      })
-      .catch((error) => {
-        console.error('Error saving data:', error);
-      });
-  };
-
-  const getData = async () => {
-    try {
-      const nameData = await AsyncStorage.getItem('my-key');
-      if (nameData) {
-        const parsedData = JSON.parse(nameData);
-        setUserData(parsedData);
-      }
-
-      const allKeys = await AsyncStorage.getAllKeys();
-      console.log('All Keys:', allKeys);
-    } catch (error) {
-      console.error('Error getting data', error);
-    }
-  };
 
   const openModal = () => {
     setModalVisible(true);
@@ -73,7 +42,7 @@ const [isModalVisible, setModalVisible] = useState(false);
         }}
       >
         <Text style={styles.buttonText}>Add Expenses</Text>
-        <ModalTemplate visible={isModalVisible} onClose = {closeModal} callit = {test} />
+        <ModalTemplate visible={() => {isModalVisible()}} onClose = {() => {closeModal()}} callit = {test} />
 
       </TouchableOpacity>
     </View>
